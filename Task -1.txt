@@ -1,0 +1,79 @@
+using System;
+
+class ChessPiece
+{
+    static void Main()
+    {
+        // Create a chessboard of size 8x8
+        int[,] gameBoard = new int[8, 8];
+
+        // User inputs the initial coordinates of the piece
+        Console.Write("Enter the row (0-7) of the piece: ");
+        int pieceRow = int.Parse(Console.ReadLine());
+        Console.Write("Enter the column (0-7) of the piece: ");
+        int pieceCol = int.Parse(Console.ReadLine());
+
+        // Identify possible moves for the piece and mark them on the board
+        IdentifyPossibleMoves(gameBoard, pieceRow, pieceCol);
+
+        // Display the modified board on the screen
+        DisplayGameBoard(gameBoard);
+    }
+
+    // Method to identify possible moves for the piece
+    static void IdentifyPossibleMoves(int[,] gameBoard, int row, int col)
+    {
+        // Possible changes in coordinates for a knight's move
+        int[] dx = { 1, 2, 2, 1, -1, -2, -2, -1 };
+        int[] dy = { 2, 1, -1, -2, -2, -1, 1, 2 };
+
+        // Mark the initial position of the piece on the board
+        gameBoard[row, col] = 2;
+
+        // Check and mark possible moves on the board
+        for (int i = 0; i < 8; i++)
+        {
+            int newRow = row + dx[i];
+            int newCol = col + dy[i];
+
+            // Check that the new coordinates are within the board limits
+            if (ValidateMove(newRow, newCol))
+            {
+                // Mark a possible move on the board
+                gameBoard[newRow, newCol] = 1;
+            }
+        }
+    }
+
+    // Method to validate the legality of a move (within the board)
+    static bool ValidateMove(int row, int col)
+    {
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
+    }
+
+    // Method to display the board with marked moves on the screen
+    static void DisplayGameBoard(int[,] gameBoard)
+    {
+        Console.WriteLine("Game Board with Piece's Possible Positions in One Step:");
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                // Display different symbols depending on the state of the cell on the board
+                if (gameBoard[i, j] == 0)
+                {
+                    Console.Write("0 "); // Empty cell
+                }
+                else if (gameBoard[i, j] == 2)
+                {
+                    Console.Write("$ "); // Piece's position
+                }
+                else
+                {
+                    Console.Write("# "); // Possible move
+                }
+            }
+            Console.WriteLine();
+        }
+    }
+}
