@@ -1,0 +1,96 @@
+using System;
+using System.Collections.Generic;
+
+class QueensArrangement
+{
+    static int chessboardSize = 8;
+
+    static void Main()
+    {
+        Tuple<int, int>[] royalPositions = new Tuple<int, int>[chessboardSize];
+
+        // Place queens randomly on the chessboard
+        for (int i = 0; i < chessboardSize; i++)
+        {
+            PlaceRoyalRandomly(royalPositions);
+        }
+
+        // Display the chessboard with the randomly placed queens
+        DisplayChessboard(royalPositions);
+    }
+
+    // Checks if a queen at position 'queen1' attacks another queen at position 'queen2'
+    static bool Attacks(Tuple<int, int> queen1, Tuple<int, int> queen2)
+    {
+        return queen1.Item1 == queen2.Item1 || queen1.Item2 == queen2.Item2 || Math.Abs(queen1.Item1 - queen2.Item1) == Math.Abs(queen1.Item2 - queen2.Item2);
+    }
+
+    // Places a queen randomly on the chessboard
+    static void PlaceRoyalRandomly(Tuple<int, int>[] royalPositions)
+    {
+        Random random = new Random();
+        List<Tuple<int, int>> safePositions;
+
+        do
+        {
+            // Get the safe positions where a queen can be placed
+            safePositions = GetSafePositions(royalPositions);
+
+            // If there are safe positions, randomly choose one and place a queen
+            if (safePositions.Count > 0)
+            {
+                Tuple<int, int> position = safePositions[random.Next(safePositions.Count)];
+                royalPositions[Array.IndexOf(royalPositions, null)] = position;
+            }
+        } while (safePositions.Count > 0);
+    }
+
+    // Returns a list of safe positions on the chessboard where a queen can be placed
+    static List<Tuple<int, int>> GetSafePositions(Tuple<int, int>[] royalPositions)
+    {
+        List<Tuple<int, int>> safePositions = new List<Tuple<int, int>>();
+
+        for (int row = 0; row < chessboardSize; row++)
+        {
+            for (int col = 0; col < chessboardSize; col++)
+            {
+                Tuple<int, int> position = Tuple.Create(row, col);
+
+                // If the position is not attacked, add it to the list of safe positions
+                if (!IsAttacked(position, royalPositions))
+                {
+                    safePositions.Add(position);
+                }
+            }
+        }
+
+        return safePositions;
+    }
+
+    // Checks if a position is attacked by any queen on the chessboard
+    static bool IsAttacked(Tuple<int, int> position, Tuple<int, int>[] royalPositions)
+    {
+        foreach (var queen in royalPositions)
+        {
+            if (queen != null && Attacks(queen, position))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Displays the chessboard with the positions of the queens
+    static void DisplayChessboard(Tuple<int, int>[] royalPositions)
+    {
+        Console.WriteLine("Chessboard with Randomly Placed Queens:");
+        for (int i = 0; i < chessboardSize; i++)
+        {
+            for (int j = 0; j < chessboardSize; j++)
+            {
+                Console.Write(Array.IndexOf(royalPositions, Tuple.Create(i, j)) != -1 ? "$ " : "# ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
