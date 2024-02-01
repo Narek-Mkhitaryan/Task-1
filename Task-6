@@ -1,0 +1,78 @@
+using System;
+
+class RandomMatrixGenerator
+{
+    static void Main()
+    {
+        Console.Write("Enter the rows: ");
+        int numRows = int.Parse(Console.ReadLine());
+        Console.Write("Enter the column: ");
+        int numColumns = int.Parse(Console.ReadLine());
+
+        int[,] generatedMatrix = GenerateRandomMatrix(numRows, numColumns);
+
+        Console.WriteLine("The Randomly Generated Matrix:");
+        DisplayMatrix(generatedMatrix);
+    }
+
+    // Generates a matrix with unique random numbers
+    static int[,] GenerateRandomMatrix(int rows, int cols)
+    {
+        int[,] matrix = new int[rows, cols];
+        Random random = new Random();
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                int randomNumber;
+
+                // Generate a random number until an unused number is obtained
+                do
+                {
+                    randomNumber = random.Next(1, 1000001);
+                } while (IsNumberUsed(matrix, randomNumber));
+
+                matrix[i, j] = randomNumber;
+            }
+        }
+
+        return matrix;
+    }
+
+    // Checks if a number is already used in the matrix
+    static bool IsNumberUsed(int[,] matrix, int number)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                if (matrix[i, j] == number)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // Displays the generated matrix
+    static void DisplayMatrix(int[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                Console.Write($"{matrix[i, j]:D2} ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
