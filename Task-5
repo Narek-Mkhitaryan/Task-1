@@ -1,0 +1,72 @@
+using System;
+
+class MatrixAnalyzer
+{
+    static void Main()
+    {
+        Console.Write("Enter the number of rows: ");
+        int numRows = int.Parse(Console.ReadLine());
+
+        Console.Write("Enter the number of columns: ");
+        int numColumns = int.Parse(Console.ReadLine());
+
+        int[,] dataMatrix = new int[numRows, numColumns];
+
+        Console.WriteLine("Enter the matrix elements:");
+        for (int i = 0; i < numRows; i++)
+        {
+            for (int j = 0; j < numColumns; j++)
+            {
+                Console.Write($"Enter element at position ({i + 1},{j + 1}): ");
+                dataMatrix[i, j] = int.Parse(Console.ReadLine());
+            }
+        }
+
+        FindSpecialElement(dataMatrix);
+    }
+
+    // Finds the special element in the matrix
+    static void FindSpecialElement(int[,] matrix)
+    {
+        int numRows = matrix.GetLength(0);
+        int numColumns = matrix.GetLength(1);
+
+        for (int i = 0; i < numRows; i++)
+        {
+            int maxInRow = int.MinValue;
+            int columnIndex = -1;
+
+            // Find the maximum element in the current row
+            for (int j = 0; j < numColumns; j++)
+            {
+                if (matrix[i, j] > maxInRow)
+                {
+                    maxInRow = matrix[i, j];
+                    columnIndex = j;
+                }
+            }
+
+            bool isSmallestInColumn = true;
+
+            // Check if the maximum element in the row is the smallest in its column
+            for (int k = 0; k < numRows; k++)
+            {
+                if (matrix[k, columnIndex] < maxInRow)
+                {
+                    isSmallestInColumn = false;
+                    break;
+                }
+            }
+
+            // If the maximum element is the smallest in its column, print the details and return
+            if (isSmallestInColumn)
+            {
+                Console.WriteLine($"Matrix element: {maxInRow}, Row: {i + 1}, Column: {columnIndex + 1}");
+                return;
+            }
+        }
+
+        // If no special element is found
+        Console.WriteLine("No special element found in the matrix.");
+    }
+}
