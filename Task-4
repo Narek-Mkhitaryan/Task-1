@@ -1,1 +1,59 @@
 
+using System;
+class KnightChess
+{
+    static int[,] board = new int[8, 8];
+    static int moveCount = 1;
+    static int knightRow;
+    static int knightCol;
+    static void Main()
+    {
+        Console.Write("Enter the row (1-8) of the knight: ");
+        knightRow = int.Parse(Console.ReadLine()) - 1;
+        Console.Write("Enter the column (1-8) of the knight: ");
+        knightCol = int.Parse(Console.ReadLine()) - 1;
+        MoveKnight();
+        DisplayChessboard();
+    }
+    static void MoveKnight()
+    {
+        int[] dx = { 1, 2, 2, 1, -1, -2, -2, -1 };
+        int[] dy = { 2, 1, -1, -2, -2, -1, 1, 2 };
+        board[knightRow, knightCol] = moveCount;
+        while (TryMove(dx, dy)) ;
+    }
+    static bool TryMove(int[] dx, int[] dy)
+    {
+        bool moved = false;
+        for (int i = 0; i < 8; i++)
+        {
+            int newRow = knightRow + dx[i];
+            int newCol = knightCol + dy[i];
+            if (IsValidMove(newRow, newCol) && board[newRow, newCol] == 0)
+            {
+                board[newRow, newCol] = ++moveCount;
+                knightRow = newRow;
+                knightCol = newCol;
+                moved = true;
+                break;
+            }
+        }
+        return moved;
+    }
+    static bool IsValidMove(int row, int col)
+    {
+        return row >= 0 && row < 8 && col >= 0 && col < 8;
+    }
+    static void DisplayChessboard()
+    {
+        Console.WriteLine("Chessboard with Knight's Possible Positions in One Step:");
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                Console.Write($"{board[i, j]:D2} ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
