@@ -1,8 +1,8 @@
 using System;
 
 class MainClass {
-    static int[,] board = new int[8, 8];
-    static int[,] used = new int[8, 8];
+    static int[,] chessboard = new int[8, 8];
+    static int[,] attacks = new int[8, 8];
     static int totalQueens = 0;
 
     public static void Main (string[] args) {
@@ -16,13 +16,13 @@ class MainClass {
     }
 
     static void PlaceQueen(int row, int col) {
-        board[row, col] = 1;
-        used[row, col] = 1;
+        chessboard[row, col] = 1;
+        attacks[row, col] = 1;
         totalQueens++;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (used[i, j] == 0 && (i == row || j == col || Math.Abs(row - i) == Math.Abs(col - j))) {
-                    used[i, j]++;
+                if (attacks[i, j] == 0 && (i == row || j == col || Math.Abs(row - i) == Math.Abs(col - j))) {
+                    attacks[i, j]++;
                 }
             }
         }
@@ -36,9 +36,9 @@ class MainClass {
             int bestCol = -1;
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
-                    if(used[row,  col] > 0)
+                    if(attacks[row,  col] > 0)
                         continue;
-                    if (board[row, col] == 0) {
+                    if (chessboard[row, col] == 0) {
                         int newAttacks = CountNewAttacks(row, col);
                         if (newAttacks < minAttacks) {
                             minAttacks = newAttacks;
@@ -61,7 +61,7 @@ class MainClass {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if ((i == row || j == col || Math.Abs(row - i) == Math.Abs(col - j)) && (i != row || j != col)) {
-                    if (board[i, j] == 0) {
+                    if (chessboard[i, j] == 0) {
                         newAttacks++;
                     }
                 }
@@ -73,9 +73,9 @@ class MainClass {
     static void PrintBoard() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (board[i, j] == 1) {
+                if (chessboard[i, j] == 1) {
                     Console.Write("   # ");
-                } else if (used[i, j] > 0) {
+                } else if (attacks[i, j] > 0) {
                     Console.Write("  -1 ");
                 } else {
                     Console.Write("  " + CountNewAttacks(i, j) + " ");
