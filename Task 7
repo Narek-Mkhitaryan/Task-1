@@ -1,96 +1,88 @@
 using System;
 
-class Program
-{
-    static void Main()
-    {
-        char[,] matrix = new char[8, 8];
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                matrix[i, j] = '1';
+class MainClass {
+    static int[,] board = new int[8, 8];
+    static int[,] used = new int[8, 8];
+    static int totalQueens = 0;
+
+    public static void Main (string[] args) {
+        Console.WriteLine("Enter the starting row (1-8):");
+        int startRow = Convert.ToInt32(Console.ReadLine()) - 1;
+        Console.WriteLine("Enter the starting column (1-8):");
+        int startCol = Convert.ToInt32(Console.ReadLine()) - 1;
+        PlaceQueen(startRow, startCol);
+        PlaceQueens();
+        Console.WriteLine("Total number of queens placed: " + totalQueens);
+    }
+
+    static void PlaceQueen(int row, int col) {
+        board[row, col] = 1;
+        used[row, col] = 1;
+        totalQueens++;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (used[i, j] == 0 && (i == row || j == col || Math.Abs(row - i) == Math.Abs(col - j))) {
+                    used[i, j]++;
+                }
             }
         }
+        PrintBoard();
+    }
 
-        Console.WriteLine("Matrix 0 (initial):");
-        PrintMatrix(matrix);
-
-        int queenCount = 0;
-        while (HasFreePositions(matrix))
-        {
-            int randomX, randomY;
-            do
-            {
-                Random random = new Random();
-                randomX = random.Next(8);
-                randomY = random.Next(8);
-            } while (matrix[randomX, randomY] != '1');
-
-            matrix[randomX, randomY] = '#';
-
-            MarkAttackedCells(matrix, randomX, randomY);
-
-            queenCount++;
-            Console.WriteLine($"Matrix {queenCount} (with queen at position {randomX}, {randomY}):");
-            PrintMatrix(matrix);
+    static void PlaceQueens() {
+        for (int i = 0; i < 8; i++) {
+            int minAttacks = int.MaxValue;
+            int bestRow = -1;
+            int bestCol = -1;
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    if(used[row,  col] > 0)
+                        continue;
+                    if (board[row, col] == 0) {
+                        int newAttacks = CountNewAttacks(row, col);
+                        if (newAttacks < minAttacks) {
+                            minAttacks = newAttacks;
+                            bestRow = row;
+                            bestCol = col;
+                        }
+                    }
+                }
+            }
+            if (bestRow != -1 && bestCol != -1) {
+                PlaceQueen(bestRow, bestCol);
+            } else {
+                break;
+            }
         }
     }
 
-    static void PrintMatrix(char[,] matrix)
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            for (int j = 0; j < 8; j++)
-            {
-                Console.Write(matrix[i, j] + " ");
+    static int CountNewAttacks(int row, int col) {
+        int newAttacks = 0;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if ((i == row || j == col || Math.Abs(row - i) == Math.Abs(col - j)) && (i != row || j != col)) {
+                    if (board[i, j] == 0) {
+                        newAttacks++;
+                    }
+                }
+            }
+        }
+        return newAttacks;
+    }
+
+    static void PrintBoard() {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i, j] == 1) {
+                    Console.Write("   # ");
+                } else if (used[i, j] > 0) {
+                    Console.Write("  -1 ");
+                } else {
+                    Console.Write("  " + CountNewAttacks(i, j) + " ");
+                }
             }
             Console.WriteLine();
         }
         Console.WriteLine();
-    }
-
-    static void MarkAttackedCells(char[,] matrix, int queenX, int queenY)
-    {
-        for (int i = 0; i < 8; i++)
-        {
-            if (matrix[queenX, i] != '#')
-                matrix[queenX, i] = '0';
-
-            if (matrix[i, queenY] != '#')
-                matrix[i, queenY] = '0';
-        }
-
-        for (int i = queenX - 1, j = queenY - 1; i >= 0 && j >= 0; i--, j--)
-        {
-            if (matrix[i, j] != '#')
-                matrix[i, j] = '0';
-        }
-        for (int i = queenX + 1, j = queenY + 1; i < 8 && j < 8; i++, j++)
-        {
-            if (matrix[i, j] != '#')
-                matrix[i, j] = '0';
-        }
-
-        for (int i = queenX - 1, j = queenY + 1; i >= 0 && j < 8; i--, j++)
-        {
-            if (matrix[i, j] != '#')
-                matrix[i, j] = '0';
-        }
-        for (int i = queenX + 1, j = queenY - 1; i < 8 && j >= 0; i++, j--)
-        {
-            if (matrix[i, j] != '#')
-                matrix[i, j] = '0';
-        }
-    }
-
-    static bool HasFreePositions(char[,] matrix)
-    {
-        foreach (char cell in matrix)
-        {
-            if (cell == '1')
-                return true;
-        }
-        return false;
     }
 }
