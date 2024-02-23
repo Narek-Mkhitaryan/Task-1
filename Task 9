@@ -79,6 +79,21 @@ public class Program
 }
 //  Task 9.4   ------------------------------------------------------------------------------------------------------------------------------------------
 using System;
+public class QuadraticSolution
+{
+    public double Root1 { get; }
+    public double Root2 { get; }
+    public QuadraticSolution(double root1, double root2)
+    {
+        Root1 = root1;
+        Root2 = root2;
+    }
+    public void Deconstruct(out double root1, out double root2)
+    {
+        root1 = Root1;
+        root2 = Root2;
+    }
+}
 public class Program
 {
     public static void Main(string[] args)
@@ -87,20 +102,20 @@ public class Program
         double coefficientA = Convert.ToDouble(Console.ReadLine());
         double coefficientB = Convert.ToDouble(Console.ReadLine());
         double coefficientC = Convert.ToDouble(Console.ReadLine());
-
-        var solutions = FindQuadraticRoots(coefficientA, coefficientB, coefficientC);
-        Console.WriteLine($"The solutions are: root1 = {solutions[0]}, root2 = {solutions[1]}");
+        var solution = SolveQuadraticEquation(coefficientA, coefficientB, coefficientC);
+        var (root1, root2) = solution;
+        Console.WriteLine($"The solutions are: root1 = {root1}, root2 = {root2}");
     }
-    public static double[] FindQuadraticRoots(double a, double b, double c)
+    public static QuadraticSolution SolveQuadraticEquation(double a, double b, double c)
     {
         double discriminant = b * b - 4 * a * c;
         if (discriminant < 0)
         {
             Console.WriteLine("The quadratic equation has complex roots.");
-            return new double[] { double.NaN, double.NaN };
+            return new QuadraticSolution(double.NaN, double.NaN);
         }
         double root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
         double root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
-        return new double[] { root1, root2 };
+        return new QuadraticSolution(root1, root2);
     }
 }
