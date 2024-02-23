@@ -1,217 +1,106 @@
+//  Task 9.1   ------------------------------------------------------------------------------------------------------------------------------------------
 using System;
-using System.Numerics;
-
-
-int? coefficientA = null, coefficientB = null, coefficientC = null;
-Solutions.Input(ref coefficientA, ref coefficientB, ref coefficientC);
-
-
-var solutionCalculator = new Solution();
-(double root1, double root2) = solutionCalculator.CalculateRoots((int)coefficientA, (int)coefficientB, (int)coefficientC);
-
-Console.WriteLine("Class\n");
-
-if (!(root1 == -1 || root2 == -1))
-    Console.WriteLine($"First Root: {root1}\n" +
-                        $"Second Root: {root2}\n");
-else
-    Console.WriteLine("No Solution. \n");
-
-
-Solutions.Run();
-
-public class Solution
+public class Program
 {
-
-    int CoefficientA { get; set; }
-    int CoefficientB { get; set; }
-    int CoefficientC { get; set; }
-
-    public (double val1, double val2) CalculateRoots(int a, int b, int c, double root1 = -1, double root2 = -1)
+    public static void Main(string[] args)
     {
-        double discriminant;
-
-        discriminant = b * b - 4 * a * c;
-
-        if (discriminant == 0)
-        {
-            root1 = -b / (2.0 * a);
-            root2 = root1;
-            return (root1, root2);
-
-        }
-        else if (discriminant > 0)
-        {
-            root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
-            root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
-            return (root1, root2);
-        }
-
-        root1 = root2 = -1;
-        return (root1, root2);
-
+        Console.WriteLine("Enter the coefficients of the quadratic equation (a, b, c):");
+        double coefficientA = Convert.ToDouble(Console.ReadLine());
+        double coefficientB = Convert.ToDouble(Console.ReadLine());
+        double coefficientC = Convert.ToDouble(Console.ReadLine());
+        double root1 = 0, root2 = 0;
+        SolveQuadraticEquation(coefficientA, coefficientB, coefficientC, ref root1, ref root2);
+        Console.WriteLine($"The solutions are: X_1 = {root1}, X_2 = {root2}");
     }
-
+    public static void SolveQuadraticEquation(double a, double b, double c, ref double root1, ref double root2)
+    {
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0)
+        {
+            Console.WriteLine("The quadratic equation has complex roots.");
+            return;
+        }
+        root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+        root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+    }
 }
-public class Solutions
+//  Task 9.2   ------------------------------------------------------------------------------------------------------------------------------------------
+using System;
+public class Program
 {
-    public static void Input(ref int? coefficientA, ref int? coefficientB, ref int? coefficientC)
+    public static void Main(string[] args)
     {
-        do
-        {
-            Console.Write("Input the value of coefficient A: ");
-
-            try
-            {
-                coefficientA = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-                  
-            }
-
-
-        } while (!(coefficientA > int.MinValue && coefficientA < int.MaxValue));
-
-        do
-        {
-            Console.Write("Input the value of coefficient B: ");
-
-            try
-            {
-                coefficientB = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-               
-            }
-
-
-        } while (!(coefficientB > int.MinValue && coefficientB < int.MaxValue));
-
-        do
-        {
-            Console.Write("Input the value of coefficient C: ");
-
-            try
-            {
-                coefficientC = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-               
-            }
-
-
-        } while (!(coefficientC > int.MinValue && coefficientC < int.MaxValue));
+        Console.WriteLine("Enter the coefficients of the quadratic equation (a, b, c):");
+        double coefficientA = Convert.ToDouble(Console.ReadLine());
+        double coefficientB = Convert.ToDouble(Console.ReadLine());
+        double coefficientC = Convert.ToDouble(Console.ReadLine());
+        var solutions = SolveQuadraticEquation(coefficientA, coefficientB, coefficientC);
+        Console.WriteLine($"The solutions are: X_1 = {solutions.Item1}, X_2 = {solutions.Item2}");
     }
-    private static void SqrtRef(int a, int b, int c, ref double x1, ref double x2)
+    public static (double, double) SolveQuadraticEquation(double a, double b, double c)
     {
-        double discriminant;
-
-        discriminant = b * b - 4 * a * c;
-
-        if (discriminant == 0)
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0)
         {
-            x1 = -b / (2.0 * a);
-            x2 = x1;
-
+            Console.WriteLine("The quadratic equation has complex roots.");
+            return (double.NaN, double.NaN);
         }
-        else if (discriminant > 0)
-        {
-            x1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
-            x2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
-
-        }
-
+        double root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+        double root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+        return (root1, root2);
     }
-    private static (double, double) SqrtTuple(int a, int b, int c)
+}
+//  Task 9.3   ------------------------------------------------------------------------------------------------------------------------------------------
+using System;
+public class Program
+{
+    public static void Main(string[] args)
     {
-        double discriminant;
-        (double, double) roots;
+        Console.WriteLine("Enter the coefficients of the quadratic equation (a, b, c):");
+        double coefficientA = Convert.ToDouble(Console.ReadLine());
+        double coefficientB = Convert.ToDouble(Console.ReadLine());
+        double coefficientC = Convert.ToDouble(Console.ReadLine());
 
-        discriminant = b * b - 4 * a * c;
-
-        if (discriminant == 0)
-        {
-            roots.Item1 = -b / (2.0 * a);
-            roots.Item2 = roots.Item1;
-            return roots;
-
-        }
-        else if (discriminant > 0)
-        {
-            roots.Item1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
-            roots.Item2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
-            return roots;
-
-        }
-
-        return (-1, -1);
-
+        var solutions = SolveQuadraticEquation(coefficientA, coefficientB, coefficientC);
+        Console.WriteLine($"The solutions are: root1 = {solutions[0]}, root2 = {solutions[1]}");
     }
-    private static double[] SqrtArray(int a, int b, int c)
+    public static double[] SolveQuadraticEquation(double a, double b, double c)
     {
-        double discriminant;
-        var arr = new double[2];
-
-        discriminant = b * b - 4 * a * c;
-
-        if (discriminant == 0)
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0)
         {
-            arr[0] = -b / (2.0 * a);
-            arr[1] = arr[0];
-            return arr;
-
+            Console.WriteLine("The quadratic equation has complex roots.");
+            return new double[] { double.NaN, double.NaN };
         }
-        else if (discriminant > 0)
-        {
-            arr[0] = (-b + Math.Sqrt(discriminant)) / (2 * a);
-            arr[1] = (-b - Math.Sqrt(discriminant)) / (2 * a);
-            return arr;
-
-        }
-
-        arr[0] = arr[1] = -1;
-
-        return arr;
+        double root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+        double root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+        return new double[] { root1, root2 };
     }
-
-    public static void Run()
+}
+//  Task 9.4   ------------------------------------------------------------------------------------------------------------------------------------------
+using System;
+public class Program
+{
+    public static void Main(string[] args)
     {
-        int? coefficientA = null, coefficientB = null, coefficientC = null;
-        Input(ref coefficientA, ref coefficientB, ref coefficientC);
-  
-        double x1 = -1, x2 = -1;
-        SqrtRef((int)coefficientA, (int)coefficientB, (int)coefficientC, ref x1, ref x2);
-        Console.WriteLine("Ref\n");
+        Console.WriteLine("Enter the coefficients of the quadratic equation (a, b, c):");
+        double coefficientA = Convert.ToDouble(Console.ReadLine());
+        double coefficientB = Convert.ToDouble(Console.ReadLine());
+        double coefficientC = Convert.ToDouble(Console.ReadLine());
 
-        if (!(x1 == -1 || x2 == -1))
-            Console.WriteLine($"First Root: {x1}\n" +
-                             $"Second Root: {x2}\n");
-        else
-            Console.WriteLine("No Solution. \n");
-
-        var rootsTuple = SqrtTuple((int)coefficientA, (int)coefficientB, (int)coefficientC);
-        Console.WriteLine("Tuple\n");
-
-        if (!(rootsTuple.Item1 == -1 || rootsTuple.Item2 == -1))
-            Console.WriteLine($"First Root: {rootsTuple.Item1}\n" +
-                             $"Second Root: {rootsTuple.Item2}\n");
-        else
-            Console.WriteLine("No Solution. \n");
-
-        var rootsArray = SqrtArray((int)coefficientA, (int)coefficientB, (int)coefficientC);
-        Console.WriteLine("Array\n");
-
-        if (!(rootsArray[0] == -1 || rootsArray[1] == -1))
-            Console.WriteLine($"First Root: {rootsArray[0]}\n" +
-                             $"Second Root: {rootsArray[1]}\n");
-        else
-            Console.WriteLine("No Solution. \n");
-
+        var solutions = FindQuadraticRoots(coefficientA, coefficientB, coefficientC);
+        Console.WriteLine($"The solutions are: root1 = {solutions[0]}, root2 = {solutions[1]}");
+    }
+    public static double[] FindQuadraticRoots(double a, double b, double c)
+    {
+        double discriminant = b * b - 4 * a * c;
+        if (discriminant < 0)
+        {
+            Console.WriteLine("The quadratic equation has complex roots.");
+            return new double[] { double.NaN, double.NaN };
+        }
+        double root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+        double root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+        return new double[] { root1, root2 };
     }
 }
