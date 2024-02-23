@@ -1,96 +1,151 @@
-public class Solutions
+using System;
+using System.Numerics;
+
+
+int? coefficientA = null, coefficientB = null, coefficientC = null;
+Solutions.Input(ref coefficientA, ref coefficientB, ref coefficientC);
+
+
+var solutionCalculator = new Solution();
+(double root1, double root2) = solutionCalculator.CalculateRoots((int)coefficientA, (int)coefficientB, (int)coefficientC);
+
+Console.WriteLine("Class\n");
+
+if (!(root1 == -1 || root2 == -1))
+    Console.WriteLine($"First Root: {root1}\n" +
+                        $"Second Root: {root2}\n");
+else
+    Console.WriteLine("No Solution. \n");
+
+
+Solutions.Run();
+
+public class Solution
 {
 
-    public static void Input(ref int? aValue, ref int? bValue, ref int? cValue)
-    {
-        do
-        {
-            Console.Write("Input the value of a : ");
+    int CoefficientA { get; set; }
+    int CoefficientB { get; set; }
+    int CoefficientC { get; set; }
 
-            try
-            {
-                aValue = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-                //Intentionally left blank   
-            }
-
-        } while (!(aValue > int.MinValue && aValue < int.MaxValue));
-
-        do
-        {
-            Console.Write("Input the value of b : ");
-
-            try
-            {
-                bValue = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-                //Intentionally left blank   
-            }
-
-
-        } while (!(bValue > int.MinValue && bValue < int.MaxValue));
-
-        do
-        {
-            Console.Write("Input the value of c : ");
-
-            try
-            {
-                cValue = Convert.ToInt32(Console.ReadLine());
-
-            }
-            catch (Exception)
-            {
-                //Intentionally left blank   
-            }
-
-
-        } while (!(cValue > int.MinValue && cValue < int.MaxValue));
-    }
-    private static void SqrtRef(int aValue, int bValue, int cValue, ref double x1, ref double x2)
+    public (double val1, double val2) CalculateRoots(int a, int b, int c, double root1 = -1, double root2 = -1)
     {
         double discriminant;
 
-        discriminant = bValue * bValue - 4 * aValue * cValue;
+        discriminant = b * b - 4 * a * c;
 
         if (discriminant == 0)
         {
-            x1 = -bValue / (2.0 * aValue);
+            root1 = -b / (2.0 * a);
+            root2 = root1;
+            return (root1, root2);
+
+        }
+        else if (discriminant > 0)
+        {
+            root1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            root2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
+            return (root1, root2);
+        }
+
+        root1 = root2 = -1;
+        return (root1, root2);
+
+    }
+
+}
+public class Solutions
+{
+    public static void Input(ref int? coefficientA, ref int? coefficientB, ref int? coefficientC)
+    {
+        do
+        {
+            Console.Write("Input the value of coefficient A: ");
+
+            try
+            {
+                coefficientA = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+                  
+            }
+
+
+        } while (!(coefficientA > int.MinValue && coefficientA < int.MaxValue));
+
+        do
+        {
+            Console.Write("Input the value of coefficient B: ");
+
+            try
+            {
+                coefficientB = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+               
+            }
+
+
+        } while (!(coefficientB > int.MinValue && coefficientB < int.MaxValue));
+
+        do
+        {
+            Console.Write("Input the value of coefficient C: ");
+
+            try
+            {
+                coefficientC = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+               
+            }
+
+
+        } while (!(coefficientC > int.MinValue && coefficientC < int.MaxValue));
+    }
+    private static void SqrtRef(int a, int b, int c, ref double x1, ref double x2)
+    {
+        double discriminant;
+
+        discriminant = b * b - 4 * a * c;
+
+        if (discriminant == 0)
+        {
+            x1 = -b / (2.0 * a);
             x2 = x1;
 
         }
         else if (discriminant > 0)
         {
-            x1 = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
-            x2 = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+            x1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            x2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
 
         }
 
     }
-    private static (double, double) SqrtTuple(int aValue, int bValue, int cValue)
+    private static (double, double) SqrtTuple(int a, int b, int c)
     {
         double discriminant;
         (double, double) roots;
 
-        discriminant = bValue * bValue - 4 * aValue * cValue;
+        discriminant = b * b - 4 * a * c;
 
         if (discriminant == 0)
         {
-            roots.Item1 = -bValue / (2.0 * aValue);
+            roots.Item1 = -b / (2.0 * a);
             roots.Item2 = roots.Item1;
             return roots;
 
         }
         else if (discriminant > 0)
         {
-            roots.Item1 = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
-            roots.Item2 = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+            roots.Item1 = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            roots.Item2 = (-b - Math.Sqrt(discriminant)) / (2 * a);
             return roots;
 
         }
@@ -98,24 +153,24 @@ public class Solutions
         return (-1, -1);
 
     }
-    private static double[] SqrtArray(int aValue, int bValue, int cValue)
+    private static double[] SqrtArray(int a, int b, int c)
     {
         double discriminant;
         var arr = new double[2];
 
-        discriminant = bValue * bValue - 4 * aValue * cValue;
+        discriminant = b * b - 4 * a * c;
 
         if (discriminant == 0)
         {
-            arr[0] = -bValue / (2.0 * aValue);
+            arr[0] = -b / (2.0 * a);
             arr[1] = arr[0];
             return arr;
 
         }
         else if (discriminant > 0)
         {
-            arr[0] = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
-            arr[1] = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+            arr[0] = (-b + Math.Sqrt(discriminant)) / (2 * a);
+            arr[1] = (-b - Math.Sqrt(discriminant)) / (2 * a);
             return arr;
 
         }
@@ -124,14 +179,14 @@ public class Solutions
 
         return arr;
     }
-    public static void Main()
+
+    public static void Run()
     {
-        int? aValue = null, bValue = null, cValue = null;
-        Input(ref aValue, ref bValue, ref cValue);
-
-
+        int? coefficientA = null, coefficientB = null, coefficientC = null;
+        Input(ref coefficientA, ref coefficientB, ref coefficientC);
+  
         double x1 = -1, x2 = -1;
-        SqrtRef((int)aValue, (int)bValue, (int)cValue, ref x1, ref x2);
+        SqrtRef((int)coefficientA, (int)coefficientB, (int)coefficientC, ref x1, ref x2);
         Console.WriteLine("Ref\n");
 
         if (!(x1 == -1 || x2 == -1))
@@ -140,7 +195,7 @@ public class Solutions
         else
             Console.WriteLine("No Solution. \n");
 
-        var rootsTuple = SqrtTuple((int)aValue, (int)bValue, (int)cValue);
+        var rootsTuple = SqrtTuple((int)coefficientA, (int)coefficientB, (int)coefficientC);
         Console.WriteLine("Tuple\n");
 
         if (!(rootsTuple.Item1 == -1 || rootsTuple.Item2 == -1))
@@ -149,7 +204,7 @@ public class Solutions
         else
             Console.WriteLine("No Solution. \n");
 
-        var rootsArray = SqrtArray((int)aValue, (int)bValue, (int)cValue);
+        var rootsArray = SqrtArray((int)coefficientA, (int)coefficientB, (int)coefficientC);
         Console.WriteLine("Array\n");
 
         if (!(rootsArray[0] == -1 || rootsArray[1] == -1))
