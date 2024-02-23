@@ -1,0 +1,162 @@
+public class Solutions
+{
+
+    public static void Input(ref int? aValue, ref int? bValue, ref int? cValue)
+    {
+        do
+        {
+            Console.Write("Input the value of a : ");
+
+            try
+            {
+                aValue = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+                //Intentionally left blank   
+            }
+
+        } while (!(aValue > int.MinValue && aValue < int.MaxValue));
+
+        do
+        {
+            Console.Write("Input the value of b : ");
+
+            try
+            {
+                bValue = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+                //Intentionally left blank   
+            }
+
+
+        } while (!(bValue > int.MinValue && bValue < int.MaxValue));
+
+        do
+        {
+            Console.Write("Input the value of c : ");
+
+            try
+            {
+                cValue = Convert.ToInt32(Console.ReadLine());
+
+            }
+            catch (Exception)
+            {
+                //Intentionally left blank   
+            }
+
+
+        } while (!(cValue > int.MinValue && cValue < int.MaxValue));
+    }
+    private static void SqrtRef(int aValue, int bValue, int cValue, ref double x1, ref double x2)
+    {
+        double discriminant;
+
+        discriminant = bValue * bValue - 4 * aValue * cValue;
+
+        if (discriminant == 0)
+        {
+            x1 = -bValue / (2.0 * aValue);
+            x2 = x1;
+
+        }
+        else if (discriminant > 0)
+        {
+            x1 = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
+            x2 = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+
+        }
+
+    }
+    private static (double, double) SqrtTuple(int aValue, int bValue, int cValue)
+    {
+        double discriminant;
+        (double, double) roots;
+
+        discriminant = bValue * bValue - 4 * aValue * cValue;
+
+        if (discriminant == 0)
+        {
+            roots.Item1 = -bValue / (2.0 * aValue);
+            roots.Item2 = roots.Item1;
+            return roots;
+
+        }
+        else if (discriminant > 0)
+        {
+            roots.Item1 = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
+            roots.Item2 = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+            return roots;
+
+        }
+
+        return (-1, -1);
+
+    }
+    private static double[] SqrtArray(int aValue, int bValue, int cValue)
+    {
+        double discriminant;
+        var arr = new double[2];
+
+        discriminant = bValue * bValue - 4 * aValue * cValue;
+
+        if (discriminant == 0)
+        {
+            arr[0] = -bValue / (2.0 * aValue);
+            arr[1] = arr[0];
+            return arr;
+
+        }
+        else if (discriminant > 0)
+        {
+            arr[0] = (-bValue + Math.Sqrt(discriminant)) / (2 * aValue);
+            arr[1] = (-bValue - Math.Sqrt(discriminant)) / (2 * aValue);
+            return arr;
+
+        }
+
+        arr[0] = arr[1] = -1;
+
+        return arr;
+    }
+    public static void Main()
+    {
+        int? aValue = null, bValue = null, cValue = null;
+        Input(ref aValue, ref bValue, ref cValue);
+
+
+        double x1 = -1, x2 = -1;
+        SqrtRef((int)aValue, (int)bValue, (int)cValue, ref x1, ref x2);
+        Console.WriteLine("Ref\n");
+
+        if (!(x1 == -1 || x2 == -1))
+            Console.WriteLine($"First Root: {x1}\n" +
+                             $"Second Root: {x2}\n");
+        else
+            Console.WriteLine("No Solution. \n");
+
+        var rootsTuple = SqrtTuple((int)aValue, (int)bValue, (int)cValue);
+        Console.WriteLine("Tuple\n");
+
+        if (!(rootsTuple.Item1 == -1 || rootsTuple.Item2 == -1))
+            Console.WriteLine($"First Root: {rootsTuple.Item1}\n" +
+                             $"Second Root: {rootsTuple.Item2}\n");
+        else
+            Console.WriteLine("No Solution. \n");
+
+        var rootsArray = SqrtArray((int)aValue, (int)bValue, (int)cValue);
+        Console.WriteLine("Array\n");
+
+        if (!(rootsArray[0] == -1 || rootsArray[1] == -1))
+            Console.WriteLine($"First Root: {rootsArray[0]}\n" +
+                             $"Second Root: {rootsArray[1]}\n");
+        else
+            Console.WriteLine("No Solution. \n");
+
+    }
+}
