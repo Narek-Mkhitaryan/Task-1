@@ -1,0 +1,15 @@
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\bin\Debug\WorkingChess.exe.config
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\bin\Debug\WorkingChess.exe
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\bin\Debug\WorkingChess.pdb
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.csproj.AssemblyReference.cache
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\MainWindow.g.cs
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\App.g.cs
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess_MarkupCompile.cache
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess_MarkupCompile.lref
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\MainWindow.baml
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.g.resources
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.Properties.Resources.resources
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.csproj.GenerateResource.cache
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.csproj.CoreCompileInputs.cache
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.exe
+C:\Users\suren\Desktop\WorkingChess-master\WorkingChess\obj\Debug\WorkingChess.pdb
